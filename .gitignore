@@ -1,10 +1,35 @@
-# Exclude sample
-sample.txt
+# Exclude IDE
+.vscode/
+.idea/
 
 # Exclude config file
-.vscode/
 *.toml
 
-# Exclude generated file
-shiori*
-*.db
+# Exclude executable file
+/shiori*
+
+# Exclude development data
+/dev-data*
+
+# Tests
+/coverage.*
+e2e-report.html
+
+# Dist files
+/dist
+
+# macOS trash files
+.DS_Store
+
+# frontend
+node_modules
+
+# golang
+go.work*
+
+# workaround for buildx using podman
+type=docker
+
+# Docs
+docs/.venv
+build/docs

@@ -1,22 +1,38 @@
-//go:generate fileb0x filebox.json
 package main
 
 import (
-	"github.com/RadhiFadlillah/shiori/cmd"
-	db "github.com/RadhiFadlillah/shiori/database"
-	_ "github.com/mattn/go-sqlite3"
+	"github.com/go-shiori/shiori/internal/cmd"
+	"github.com/go-shiori/shiori/internal/model"
+	"github.com/sirupsen/logrus"
+
+	// Add this to prevent it removed by go mod tidy
+	_ "github.com/shurcooL/vfsgen"
 )
 
-func main() {
-	sqliteDB, err := db.OpenSQLiteDatabase()
-	checkError(err)
+var (
+	version = "dev"
+	commit  = "none"
+	date    = "unknown"
+)
 
-	cmd.DB = sqliteDB
-	cmd.Execute()
+func init() {
+	// Set globally
+	model.BuildVersion = version
+	model.BuildCommit = commit
+	model.BuildDate = date
 }
 
-func checkError(err error) {
+// @title						Shiori API
+// @version					1.0
+// @description				Shiori is a simple bookmarks manager. This is the documentation for its HTTP API.
+// @BasePath					/
+// @securityDefinitions.apikey	ApiKeyAuth
+// @in							header
+// @name						Authorization
+// @description				Type "Bearer" followed by a space and the JWT token.
+func main() {
+	err := cmd.ShioriCmd().Execute()
 	if err != nil {
-		panic(err)
+		logrus.Fatalln(err)
 	}
 }
